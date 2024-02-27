@@ -14,9 +14,9 @@ class PintarSSO {
     public string $token_endpoint;
     public string $user_profile_endpoint;
 
-    public function __construct(string $client_id, string $client_secret = "", string $callback_url = "") {
-        $this->client_id = $client_id;
-        $this->client_secret = $client_secret;
+    public function __construct(string $callback_url) {
+        $this->client_id = config('pintar_sso.client_id');
+        $this->client_secret = config('pintar_sso.client_secret');
         $this->callback_url = $callback_url;
         $this->base_url = env('PINTAR_SSO_AUTH_DOMAIN', "http://localhost:3000");
         // $this->base_url = "http://localhost:3000";

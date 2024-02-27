@@ -1,26 +1,25 @@
 {
-    "name": "banjarmasinkota/pintar-sso",
-    "type": "library",
-    "require": {
-        "illuminate/support": "*",
-        "illuminate/validation": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "Banjarmasinkota\\PintarSso\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Kiki Irwan Maulana",
-            "email": "48400192+kim-dev-git@users.noreply.github.com"
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Banjarmasinkota\\PintarSso\\PintarSSOServiceProvider"
-            ]
-        }
+  "name": "banjarmasinkota/pintar-sso",
+  "type": "library",
+  "require-dev": {
+    "laravel/framework": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Banjarmasinkota\\PintarSso\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "Kiki Irwan Maulana",
+      "email": "48400192+kim-dev-git@users.noreply.github.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Banjarmasinkota\\PintarSso\\PintarSSOServiceProvider"
+      ]
+    }
+  }
 }

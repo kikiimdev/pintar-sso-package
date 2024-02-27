@@ -18,4 +18,11 @@ class PintarSSOServiceProvider extends ServiceProvider
     {
         $this->app->singleton('PintarSSO', PintarSSO::class);
     }
+
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__.'../config/pintar_sso.php' => config_path('pintar_sso.php')
+        ]);
+    }
 }
