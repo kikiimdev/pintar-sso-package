@@ -22,7 +22,7 @@ class PintarSSOServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'../config/pintar_sso.php' => config_path('pintar_sso.php')
+            __DIR__.'/../config/pintar_sso.php' => config_path('pintar_sso.php')
         ]);
     }
 }
