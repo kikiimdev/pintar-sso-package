@@ -14,7 +14,7 @@ class PintarSSO {
     public string $token_endpoint;
     public string $user_profile_endpoint;
 
-    public function __construct(string $callback_url) {
+    public function __construct(string $callback_url = "") {
         $this->client_id = config('pintar_sso.client_id');
         $this->client_secret = config('pintar_sso.client_secret');
         $this->callback_url = $callback_url;
