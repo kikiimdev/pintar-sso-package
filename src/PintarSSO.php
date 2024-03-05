@@ -119,6 +119,8 @@ class PintarSSO {
 
         $meta['path'] = $path;
         $meta['query'] = $query;
+        $meta['user-agent'] = $request->header('user-agent');
+        $meta['ip'] = $request->ip();
 
         $response = Http::post($this->activity_endpoint, [
             'clientId' => $this->client_id,
