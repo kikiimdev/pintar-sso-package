@@ -44,7 +44,7 @@ class PintarSSO {
             'Authorization' => 'Bearer ' . $tokens['access_token'],
         ])->get($this->user_profile_endpoint);
 
-        $this->log_activity($request, 'LOGIN');
+        // $this->log_activity($request, 'LOGIN');
 
         return (object) $response['user'];
     }
