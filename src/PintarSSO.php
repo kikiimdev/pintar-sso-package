@@ -2,7 +2,9 @@
 
 namespace Banjarmasinkota\PintarSSO;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 
 class PintarSSO {
@@ -13,16 +15,17 @@ class PintarSSO {
     public string $authorize_endpoint;
     public string $token_endpoint;
     public string $user_profile_endpoint;
+    public string $activity_endpoint;
 
     public function __construct(string $callback_url = "") {
         $this->client_id = config('pintar_sso.client_id');
         $this->client_secret = config('pintar_sso.client_secret');
         $this->callback_url = $callback_url;
-        $this->base_url = env('PINTAR_SSO_AUTH_DOMAIN', "http://localhost:3000");
-        // $this->base_url = "http://localhost:3000";
+        $this->base_url = config('pintar_sso.auth_domain');
         $this->authorize_endpoint = $this->base_url . "/api/oauth/authorize";
         $this->token_endpoint = $this->base_url . "/api/oauth/accessToken";
         $this->user_profile_endpoint = $this->base_url . "/api/oauth/me";
+        $this->activity_endpoint = $this->base_url . "/api/v1/activity";
     }
 
     function get_user_from_callback($request) {
@@ -41,7 +44,9 @@ class PintarSSO {
             'Authorization' => 'Bearer ' . $tokens['access_token'],
         ])->get($this->user_profile_endpoint);
 
-        return $response['user'];
+        $this->log_activity($request, 'LOGIN');
+
+        return (object) $response['user'];
     }
 
     function validate_authorization_code(string $code) {
@@ -101,5 +106,29 @@ class PintarSSO {
           $random_string .= $characters[rand(0, strlen($characters) - 1)];
         }
         return $random_string;
+    }
+
+    function log_activity(Request $request, $type = 'LOG') {
+        $user = auth()->user();
+
+        $pintar_account = $user->pintar_account;
+        $meta = [];
+        $meta['userId'] = $user->id;
+        $path = $request->getPathInfo();
+        $query = $request->all();
+
+        $meta['path'] = $path;
+        $meta['query'] = $query;
+
+        $response = Http::post($this->activity_endpoint, [
+            'clientId' => $this->client_id,
+            'clientSecret' => $this->client_secret,
+            'userId' => $pintar_account->pintar_id,
+            'type' => $type,
+            'meta' => $meta,
+        ]);
+
+        return $response;
+
     }
 }

@@ -18,7 +18,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Banjarmasinkota\\PintarSso\\PintarSSOServiceProvider"
+        "Banjarmasinkota\\PintarSSO\\Providers\\PintarSSOServiceProvider"
       ]
     }
   }
