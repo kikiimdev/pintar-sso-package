@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace Banjarmasinkota\PintarSSO\Traits;
 
 use App\Models\PintarAccount;
 use Illuminate\Database\Eloquent\Relations\HasOne;
