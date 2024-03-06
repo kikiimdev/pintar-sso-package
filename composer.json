@@ -6,7 +6,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Banjarmasinkota\\PintarSso\\": "src/"
+      "Banjarmasinkota\\PintarSSO\\": "src/"
     }
   },
   "authors": [
