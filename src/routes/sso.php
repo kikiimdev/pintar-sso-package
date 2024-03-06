@@ -26,7 +26,7 @@ Route::prefix('sso')->group(function () {
                 'pintar_id' => $pintar_account->id,
             ]);
 
-            return $user;
+            return response()->intended(config('post_bind'));
         } catch (\Exception $error) {
             return response()->json($error->getMessage(), 500);
         }
@@ -52,7 +52,7 @@ Route::prefix('sso')->group(function () {
 
             $sso->log_activity($request, 'LOGIN');
 
-            return redirect()->intended(RouteServiceProvider::HOME);
+            return response()->intended(config('post_login'));
         } catch (\Exception $error) {
             return response()->json($error->getMessage(), 500);
         }
