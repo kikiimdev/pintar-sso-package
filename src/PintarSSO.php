@@ -136,7 +136,7 @@ class PintarSSO {
 
     }
 
-    function find_many_role(Request $request) {
+    function find_many_role() {
         $response = Http::withHeaders([
             'clientId' => $this->client_id,
             'clientSecret' => $this->client_secret,
@@ -146,16 +146,24 @@ class PintarSSO {
         return $response;
     }
 
-    function update_user_role(Request $request) {
-        $body = $request->all();
-
+    function update_user_role(String $pintar_id, String $role_id) {
         $response = Http::withHeaders([
             'clientId' => $this->client_id,
             'clientSecret' => $this->client_secret,
         ])
-        ->put($this->base_url . "/api/v1/user/" . $body["pintar_id"] . "/role", [
-            'roleId' => $body["role_id"]
+        ->put($this->base_url . "/api/v1/user/" . $pintar_id . "/role", [
+            'roleId' => $role_id
         ]);
+
+        return $response;
+    }
+
+    function get_user_by_pintar_id(String $pintar_id) {
+        $response = Http::withHeaders([
+            'clientId' => $this->client_id,
+            'clientSecret' => $this->client_secret,
+        ])
+        ->get($this->base_url . "/api/v1/user/" . $pintar_id);
 
         return $response;
     }
