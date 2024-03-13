@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 
-class PintarSSO {
+class PintarSSO
+{
     protected string $client_id;
     protected string $client_secret;
     protected string $callback_url;
@@ -17,7 +18,8 @@ class PintarSSO {
     public string $user_profile_endpoint;
     public string $activity_endpoint;
 
-    public function __construct(string $callback_url = "") {
+    public function __construct(string $callback_url = "")
+    {
         $this->client_id = config('pintar_sso.client_id');
         $this->client_secret = config('pintar_sso.client_secret');
         $this->callback_url = $callback_url;
@@ -28,7 +30,8 @@ class PintarSSO {
         $this->activity_endpoint = $this->base_url . "/api/v1/activity";
     }
 
-    function get_user_from_callback($request) {
+    function get_user_from_callback($request)
+    {
         $code = $request->input('code');
         $state = $request->input('state');
         $storedState = $request->cookie('state');
@@ -49,7 +52,8 @@ class PintarSSO {
         return (object) $response['user'];
     }
 
-    function validate_authorization_code(string $code) {
+    function validate_authorization_code(string $code)
+    {
         $response = Http::post($this->token_endpoint, [
             'code' => $code,
             'client_id' => $this->client_id,
@@ -59,7 +63,8 @@ class PintarSSO {
         return $response;
     }
 
-    function create_authorization_url(string $state) {
+    function create_authorization_url(string $state)
+    {
         $url = $this->authorize_endpoint . '?'
             . 'response_type=code'
             . '&client_id=' . $this->client_id
@@ -69,7 +74,8 @@ class PintarSSO {
         return $url;
     }
 
-    function redirect_to_authorization_url(Object $query = null) {
+    function redirect_to_authorization_url(Object $query = null)
+    {
         $state = $this->generate_state();
         $url = $this->create_authorization_url($state);
 
@@ -99,16 +105,18 @@ class PintarSSO {
             );
     }
 
-    function generate_state($length = 22) {
+    function generate_state($length = 22)
+    {
         $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-";
         $random_string = "";
         for ($i = 0; $i < $length; $i++) {
-          $random_string .= $characters[rand(0, strlen($characters) - 1)];
+            $random_string .= $characters[rand(0, strlen($characters) - 1)];
         }
         return $random_string;
     }
 
-    function log_activity(Request $request, $type = 'LOG') {
+    function log_activity(Request $request, $type = 'LOG')
+    {
         $user = auth()->user();
 
         $pintar_account = $user->pintar_account;
@@ -126,44 +134,56 @@ class PintarSSO {
             'clientId' => $this->client_id,
             'clientSecret' => $this->client_secret,
         ])
-        ->post($this->activity_endpoint, [
-            'userId' => $pintar_account->pintar_id,
-            'type' => $type,
-            'meta' => $meta,
-        ]);
-
-        return $response;
-
-    }
-
-    function find_many_role() {
-        $response = Http::withHeaders([
-            'clientId' => $this->client_id,
-            'clientSecret' => $this->client_secret,
-        ])
-        ->get($this->base_url . "/api/v1/role");
+            ->post($this->activity_endpoint, [
+                'userId' => $pintar_account->pintar_id,
+                'type' => $type,
+                'meta' => $meta,
+            ]);
 
         return $response;
     }
 
-    function update_user_role(String $pintar_id, String $role_id) {
+    function find_many_role()
+    {
         $response = Http::withHeaders([
             'clientId' => $this->client_id,
             'clientSecret' => $this->client_secret,
         ])
-        ->put($this->base_url . "/api/v1/user/" . $pintar_id . "/role", [
-            'roleId' => $role_id
-        ]);
+            ->get($this->base_url . "/api/v1/role");
 
         return $response;
     }
 
-    function get_user_by_pintar_id(String $pintar_id) {
+    function update_user_role(String $pintar_id, String $role_id)
+    {
         $response = Http::withHeaders([
             'clientId' => $this->client_id,
             'clientSecret' => $this->client_secret,
         ])
-        ->get($this->base_url . "/api/v1/user/" . $pintar_id);
+            ->put($this->base_url . "/api/v1/user/" . $pintar_id . "/role", [
+                'roleId' => $role_id
+            ]);
+
+        return $response;
+    }
+
+    function get_user_by_pintar_id(String $pintar_id)
+    {
+        $response = Http::withHeaders([
+            'clientId' => $this->client_id,
+            'clientSecret' => $this->client_secret,
+        ])
+            ->get($this->base_url . "/api/v1/user/" . $pintar_id);
+
+        return $response;
+    }
+
+    function find_many_user(array $query = null)
+    {
+        $response = Http::withHeaders([
+            'clientId' => $this->client_id,
+            'clientSecret' => $this->client_secret,
+        ])->get($this->base_url . "/api/v1/user", $query);
 
         return $response;
     }
