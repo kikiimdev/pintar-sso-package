@@ -15,5 +15,10 @@ class PintarAccount extends Model
     protected $fillable = [
         'user_id',
         'pintar_id',
+        'meta',
+    ];
+
+    protected $casts = [
+        'meta' => 'array'
     ];
 }
