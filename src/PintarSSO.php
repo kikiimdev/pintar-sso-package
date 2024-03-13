@@ -122,9 +122,11 @@ class PintarSSO {
         $meta['user-agent'] = $request->header('user-agent');
         $meta['ip'] = $request->ip();
 
-        $response = Http::post($this->activity_endpoint, [
+        $response = Http::withHeaders([
             'clientId' => $this->client_id,
             'clientSecret' => $this->client_secret,
+        ])
+        ->post($this->activity_endpoint, [
             'userId' => $pintar_account->pintar_id,
             'type' => $type,
             'meta' => $meta,
@@ -132,5 +134,29 @@ class PintarSSO {
 
         return $response;
 
+    }
+
+    function find_many_role(Request $request) {
+        $response = Http::withHeaders([
+            'clientId' => $this->client_id,
+            'clientSecret' => $this->client_secret,
+        ])
+        ->get($this->base_url . "/api/v1/role");
+
+        return $response;
+    }
+
+    function update_user_role(Request $request) {
+        $body = $request->all();
+
+        $response = Http::withHeaders([
+            'clientId' => $this->client_id,
+            'clientSecret' => $this->client_secret,
+        ])
+        ->put($this->base_url . "/api/v1/user/" . $body["pintar_id"] . "/role", [
+            'roleId' => $body["role_id"]
+        ]);
+
+        return $response;
     }
 }
