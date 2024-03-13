@@ -29,8 +29,10 @@ trait HasPintarAccount
 
     $account = request()->user()->pintar_account()->updateOrCreate([
       'pintar_id' => $pintar_account->id,
+      'meta' => $pintar_account
     ], [
       'pintar_id' => $pintar_account->id,
+      'meta' => $pintar_account
     ]);
 
     if ($redirect) {
