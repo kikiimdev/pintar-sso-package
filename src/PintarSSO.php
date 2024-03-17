@@ -154,14 +154,14 @@ class PintarSSO
         return $response;
     }
 
-    function update_user_role(String $pintar_id, String $role_id)
+    function update_user_role(String $pintar_id, String $role_key)
     {
         $response = Http::withHeaders([
             'clientId' => $this->client_id,
             'clientSecret' => $this->client_secret,
         ])
             ->put($this->base_url . "/api/v1/user/" . $pintar_id . "/role", [
-                'roleId' => $role_id
+                'role' => $role_key
             ]);
 
         return $response;
