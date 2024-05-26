@@ -29,7 +29,7 @@ class PintarSSOServiceProvider extends ServiceProvider
             __DIR__ . '/../Traits/HasPintarAccount.php' => base_path('/app/Traits/HasPintarAccount.php'),
             __DIR__ . '/../Models/PintarAccount.php' => base_path('/app/Models/PintarAccount.php'),
             __DIR__ . '/../routes/sso.php' => base_path('/routes/sso.php'),
-            __DIR__ . '/../components/pintar-sso-one-tap.blade.php' => base_path('/resources/components/pintar-sso-one-tap.blade.php'),
+            __DIR__ . '/../components/pintar-sso-one-tap.blade.php' => base_path('/resources/views/components/pintar-sso-one-tap.blade.php'),
         ]);
 
         $this->mergeConfigFrom(__DIR__ . '/../config/pintar_sso.php', 'pintar_sso');
