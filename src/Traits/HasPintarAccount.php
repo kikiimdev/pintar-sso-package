@@ -55,7 +55,7 @@ trait HasPintarAccount
             $query['authorized'] = true;
         }
 
-        return $sso->redirect_to_authorization_url();
+        return $sso->redirect_to_authorization_url($query);
     }
 
     public static function login_from_callback(Request $request, bool $redirect = false)
