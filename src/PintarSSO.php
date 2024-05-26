@@ -63,13 +63,14 @@ class PintarSSO
         return $response;
     }
 
-    function create_authorization_url(string $state)
+    function create_authorization_url(string $state, $authorized = false)
     {
         $url = $this->authorize_endpoint . '?'
             . 'response_type=code'
             . '&client_id=' . $this->client_id
             . '&state=' . $state
-            . '&redirect_uri=' . $this->callback_url;
+            . '&redirect_uri=' . $this->callback_url
+            . $authorized ? 'authorized' : '';
 
         return $url;
     }
@@ -77,7 +78,9 @@ class PintarSSO
     function redirect_to_authorization_url(Object $query = null)
     {
         $state = $this->generate_state();
-        $url = $this->create_authorization_url($state);
+        $authorized = $query && $query['$authorized'];
+        dd($query, $authorized);
+        $url = $this->create_authorization_url($state, $authorized);
 
         $cookieName = "state";
         $cookieValue = $state;

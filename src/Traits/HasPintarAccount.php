@@ -44,10 +44,16 @@ trait HasPintarAccount
         return $account;
     }
 
-    public static function redirect_to_login_page()
+    public static function redirect_to_login_page(Request $request)
     {
         $callback_url = url('sso/login/callback');
         $sso = new PintarSSO($callback_url);
+
+
+        $query = null;
+        if ($request->has('authorized')) {
+            $query['authorized'] = true;
+        }
 
         return $sso->redirect_to_authorization_url();
     }
