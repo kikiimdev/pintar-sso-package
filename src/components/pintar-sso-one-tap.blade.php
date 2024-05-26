@@ -5,7 +5,7 @@
 ])
 
 <div>
-    <iframe src="http://localhost:3000/oauth/one-tap?client_id={{config('pintar_sso.client_id')}}&redirect_uri={{config('pintar_sso.post_login')}}" style="z-index: 999; position: fixed; right: 0px; top: 0px; width: 500px; max-width: 100vw; height: 50vh"></iframe>
+    <iframe id="sso-one-tap" src="{{config('pintar_sso.auth_domain')}}/oauth/one-tap?client_id={{config('pintar_sso.client_id')}}&redirect_uri={{config('pintar_sso.post_login')}}" style="z-index: 999; position: fixed; right: 0px; top: 0px; width: 500px; max-width: 100vw; height: 50vh"></iframe>
     <script>
         window.addEventListener('message', function(event) {
             const isWappalyzerPlugin = !!event.data?.wappalyzer
@@ -14,7 +14,8 @@
             }
             const isCloseCommand = event.data == "sso-one-tap-close"
             if (isCloseCommand) {
-                console.log("Message received from the child: ", event.data);
+                const element = document.getElementById("sso-one-tap");
+                element.remove();
             }
 
             const isConfirmCommand = event.data == "sso-one-tap-confirm"
