@@ -73,6 +73,9 @@ class PintarSSO
 
         if ($authorized) $url = $url . '&authorized=' . $authorized;
 
+        $redirect_to = @request()->query('redirect_to');
+        if ($redirect_to = $redirect_to . '&redirect_to=' . $redirect_to);
+
         return $url;
     }
 
