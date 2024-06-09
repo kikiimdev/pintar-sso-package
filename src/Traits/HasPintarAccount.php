@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Banjarmasinkota\PintarSSO\PintarSSO;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Cookie;
 
 trait HasPintarAccount
 {
