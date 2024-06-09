@@ -7,6 +7,7 @@ use App\Models\PintarAccount;
 use Illuminate\Support\Facades\Auth;
 use Banjarmasinkota\PintarSSO\PintarSSO;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Crypt;
 
 trait HasPintarAccount
 {
@@ -58,6 +59,7 @@ trait HasPintarAccount
         $redirect_to = $request->query('redirect_to');
         if ($redirect_to) {
             $query['redirect_to'] = $redirect_to;
+            cookie()->queue('redirect_to', $redirect_to, 10);
         }
 
         return $sso->redirect_to_authorization_url($query);
@@ -92,6 +94,13 @@ trait HasPintarAccount
         $sso->log_activity($request, 'LOGIN');
 
         if ($redirect) {
+            $redirect_to = Crypt::decryptString(Cookie::get('redirect_to'));
+            if ($redirect_to) {
+                $split_ = explode('|', $redirect_to);
+                $redirect_to = $split_[1];
+                return response()->redirectToIntended(url($redirect_to));
+            }
+
             return response()->redirectToIntended(url(config('pintar_sso.post_login')));
         }
 
