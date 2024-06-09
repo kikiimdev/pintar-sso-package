@@ -95,7 +95,7 @@ trait HasPintarAccount
         $sso->log_activity($request, 'LOGIN');
 
         if ($redirect) {
-            $redirect_to = Cookie::get('redirect_to')
+            $redirect_to = Cookie::get('redirect_to');
             if ($redirect_to) {
                 return response()->redirectToIntended(url($redirect_to));
             }
