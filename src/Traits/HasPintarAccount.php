@@ -55,6 +55,11 @@ trait HasPintarAccount
             $query['authorized'] = true;
         }
 
+        $redirect_to = $request->query('redirect_to');
+        if ($redirect_to) {
+            $query['redirect_to'] = $redirect_to;
+        }
+
         return $sso->redirect_to_authorization_url($query);
     }
 
@@ -65,6 +70,10 @@ trait HasPintarAccount
 
         // find the user that has $pintar_sso_user->id
         $user = static::whereRelation('pintar_account', 'pintar_id', $pintar_account->id)->first();
+        if (!$user) {
+            $register_url = config('pintar_sso.register_url');
+            return response()->redirectToIntended(url($register_url . '?pintar_id=' . $pintar_account->id . '&name=' . $pintar_account->name));
+        }
 
         // Login using user id
         Auth::loginUsingId($user->id);
