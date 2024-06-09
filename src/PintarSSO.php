@@ -79,7 +79,7 @@ class PintarSSO
     function redirect_to_authorization_url($query = null)
     {
         $state = $this->generate_state();
-        $authorized = $query && $query['authorized'];
+        $authorized = @$query['authorized'];
         $url = $this->create_authorization_url($state, $authorized);
 
         $cookieName = "state";
