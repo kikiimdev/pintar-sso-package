@@ -22,7 +22,11 @@
                 const isConfirmCommand = event.data == "sso-one-tap-confirm"
                 if (isConfirmCommand) {
                     // console.log("Confirmed: ", event.data);
-                    window.location.href = `{{config('app.url')}}/sso/login?authorized`
+                    let url = `{{config('app.url')}}/sso/login?authorized=true`
+                    const {pathname} = window.location
+                    if (pathname) url += `&redirect_to=${pathname}`
+
+                    window.location.href = url
                 }
             });
         </script>
